@@ -9,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import styles from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import { API } from "../../API";
 
 class Register extends React.Component {
 	constructor() {
@@ -90,6 +91,7 @@ class Register extends React.Component {
 									style={{ color: "#ffffff" }}
 									variant="outlined"
 									required={true}
+									type="email"
 									fullWidth
 									id="email"
 									label="Enter Email Address"
@@ -230,7 +232,7 @@ class Register extends React.Component {
 		const { name, usn, email, password, phone, upi_ref_no } = this.state;
 		try {
 			const { data } = await axios.post(
-				"http://localhost:5001/api/auth/register",
+				`${API}/api/auth/register`,
 				{ name, usn, email, phone, password, upi_ref_no },
 				config
 			);

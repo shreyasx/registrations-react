@@ -1,18 +1,22 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import styles from "./styles";
-import { withStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import { Alert } from "../forgotpassword/ForgotPassword";
+import { withStyles } from "@material-ui/core/styles";
+import { API } from "../../API";
 
 class ResetPassword extends React.Component {
 	constructor() {
 		super();
 		this.state = {
 			password: null,
+			loading: false,
 			cnfPassword: null,
 			error: "",
 			success: "",
@@ -26,6 +30,19 @@ class ResetPassword extends React.Component {
 			<div>
 				<Container component="main" maxWidth="xs">
 					<CssBaseline />
+					<Snackbar
+						open={this.state.open}
+						autoHideDuration={7000}
+						onClose={this.handleClose}
+					>
+						<Alert
+							onClose={this.handleClose}
+							severity="success"
+							sx={{ width: "100%" }}
+						>
+							Password reset successful!
+						</Alert>
+					</Snackbar>
 					<div className={classes.paper}>
 						<Typography component="h1" variant="h5">
 							Reset Password
@@ -57,15 +74,25 @@ class ResetPassword extends React.Component {
 								autoFocus
 								onChange={e => this.userTyping("cnfPassword", e)}
 							/>
-							<Button
+							<LoadingButton
 								type="submit"
+								loading={this.state.loading}
 								fullWidth
 								variant="contained"
 								className={classes.submit}
 							>
 								Reset Password
-							</Button>
+							</LoadingButton>
 						</form>
+						{this.state.signupError ? (
+							<Typography
+								className={classes.errorText}
+								component="h5"
+								variant="body2"
+							>
+								{this.state.signupError}
+							</Typography>
+						) : null}
 					</div>
 				</Container>
 			</div>
@@ -87,45 +114,44 @@ class ResetPassword extends React.Component {
 		}
 	};
 
+	handleClick = () => {
+		this.setState({ open: true });
+	};
+
+	handleClose = (event, reason) => {
+		if (reason === "clickaway") return;
+		this.setState({ open: false });
+	};
+
 	submitNewPass = async e => {
+		this.setState({ loading: true });
 		e.preventDefault();
-
-		const config = {
-			header: {
-				"Content-Type": "application/json",
-			},
-		};
-
+		const config = { header: { "Content-Type": "application/json" } };
 		if (!this.formIsValid()) {
 			this.setState({ password: "" });
 			this.setState({ cnfPassword: "" });
 			this.setState({ signupError: "Passwords do not match!" });
-
 			setTimeout(() => {
 				this.setState({ signupError: " " });
 			}, 5000);
+			this.setState({ loading: false });
 			return;
 		}
-
 		const { password } = this.state;
-
 		try {
 			const { data } = await axios.put(
-				`http://localhost:5001/api/auth/resetpassword/${this.props.match.params.resetToken}`,
+				`${API}/api/auth/resetpassword/${this.props.match.params.resetToken}`,
 				{ password },
 				config
 			);
-			this.setState({
-				success: data.data,
-			});
+			if (data.success) this.handleClick();
 		} catch (error) {
-			this.setState({
-				error: error,
-			});
+			this.setState({ signupError: "Some error occurred. Contact developer." });
 			setTimeout(() => {
 				this.setState({ error: " " });
 			}, 5000);
 		}
+		this.setState({ loading: false });
 	};
 }
 

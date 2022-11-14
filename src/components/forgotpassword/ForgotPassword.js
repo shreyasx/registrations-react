@@ -1,12 +1,19 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import styles from "./styles";
-import { withStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { withStyles } from "@material-ui/core/styles";
+import { API } from "../../API";
+
+export const Alert = React.forwardRef(function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 class ForgotPassword extends React.Component {
 	constructor() {
@@ -14,7 +21,9 @@ class ForgotPassword extends React.Component {
 		this.state = {
 			email: null,
 			error: "",
+			loading: false,
 			success: "",
+			open: false,
 		};
 	}
 
@@ -25,6 +34,19 @@ class ForgotPassword extends React.Component {
 			<div>
 				<Container component="main" maxWidth="xs">
 					<CssBaseline />
+					<Snackbar
+						open={this.state.open}
+						autoHideDuration={7000}
+						onClose={this.handleClose}
+					>
+						<Alert
+							onClose={this.handleClose}
+							severity="success"
+							sx={{ width: "100%" }}
+						>
+							If an account with that email exists, we've sent you a mail.
+						</Alert>
+					</Snackbar>
 					<div className={classes.paper}>
 						<Typography component="h1" variant="h5">
 							Forgot Password
@@ -51,14 +73,15 @@ class ForgotPassword extends React.Component {
 								autoFocus
 								onChange={e => this.handleChange(e)}
 							/>
-							<Button
+							<LoadingButton
 								type="submit"
+								loading={this.state.loading}
 								fullWidth
 								variant="contained"
 								className={classes.submit}
 							>
 								Forgot Password
-							</Button>
+							</LoadingButton>
 						</form>
 					</div>
 				</Container>
@@ -72,33 +95,23 @@ class ForgotPassword extends React.Component {
 		});
 	};
 
+	handleClick = () => {
+		this.setState({ open: true });
+	};
+
+	handleClose = (event, reason) => {
+		if (reason === "clickaway") return;
+		this.setState({ open: false });
+	};
+
 	submitRequest = async e => {
+		this.setState({ loading: true });
 		e.preventDefault();
 		const { email } = this.state;
-
-		const config = {
-			header: {
-				"Content-Type": "application/json",
-			},
-		};
-
-		try {
-			const { data } = await axios.post(
-				"http://localhost:5001/api/auth/forgotpassword",
-				{ email },
-				config
-			);
-			this.setState({
-				success: data.data,
-			});
-		} catch (error) {
-			this.setState({
-				error: error,
-			});
-			setTimeout(() => {
-				this.setState({ signupError: " " });
-			}, 5000);
-		}
+		const config = { header: { "Content-Type": "application/json" } };
+		await axios.post(`${API}/api/auth/forgotpassword`, { email }, config);
+		this.handleClick();
+		this.setState({ loading: false });
 	};
 }
 

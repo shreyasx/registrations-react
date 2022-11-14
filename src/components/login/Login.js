@@ -9,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import styles from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import { API } from "../../API";
 
 class Login extends React.Component {
 	constructor() {
@@ -125,7 +126,7 @@ class Login extends React.Component {
 		const { email, password } = this.state;
 		try {
 			const { data } = await axios.post(
-				"http://localhost:5001/api/auth/login",
+				`${API}/api/auth/login`,
 				{ email, password },
 				{
 					header: {

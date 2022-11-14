@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Button } from "@material-ui/core";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { API } from "../../API";
 
 class Private extends React.Component {
 	constructor() {
@@ -16,7 +17,7 @@ class Private extends React.Component {
 
 		const fetchPrivateData = async () => {
 			try {
-				const { data } = await axios.get("/api/private", {
+				const { data } = await axios.get(`${API}/api/private`, {
 					headers: {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -96,7 +97,7 @@ class Private extends React.Component {
 	};
 
 	fetchUsers = async () => {
-		const { data } = await axios.get("/api/private/list", {
+		const { data } = await axios.get(`${API}/api/private/list`, {
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -108,7 +109,7 @@ class Private extends React.Component {
 	approve = async usn => {
 		this.setState({ loading: true });
 		const { data } = await axios.put(
-			"/api/private/approve",
+			`${API}/api/private/approve`,
 			{ usn },
 			{
 				headers: {
