@@ -40,7 +40,7 @@ class Register extends React.Component {
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
-					<Typography component="h1" variant="h3">
+					<Typography style={{ margin: "10px 0" }} component="h1" variant="h3">
 						Sign up
 					</Typography>
 					<form onSubmit={e => this.submitSignup(e)} className={classes.form}>

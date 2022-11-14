@@ -6,27 +6,28 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import ResetPassword from "./components/resetpassword/ResetPassword";
+import Layout from "./components/layout/layout";
 
 class App extends React.Component {
-  render() {
-    return (
-      <Router>
-        <div className="app">
-          <Switch>
-            <PrivateRoute exact path="/" component={Private} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/forgotpassword" component={ForgotPassword} />
-            <Route
-              exact
-              path="/resetpassword/:resetToken"
-              component={ResetPassword}
-            />
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
+	render() {
+		return (
+			<Router>
+				<Layout>
+					<Switch>
+						<PrivateRoute exact path="/" component={Private} />
+						<Route exact path="/login" component={Login} />
+						<Route exact path="/register" component={Register} />
+						<Route exact path="/forgotpassword" component={ForgotPassword} />
+						<Route
+							exact
+							path="/resetpassword/:resetToken"
+							component={ResetPassword}
+						/>
+					</Switch>
+				</Layout>
+			</Router>
+		);
+	}
 }
 
 export default App;

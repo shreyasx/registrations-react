@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
-import { Button } from "@material-ui/core";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Container from "@mui/material/Container";
 import { API } from "../../API";
 
 class Private extends React.Component {
@@ -80,21 +80,13 @@ class Private extends React.Component {
 						</table>
 					</div>
 				) : (
-					<>{this.state.approved ? "approved" : "not app"}</>
+					<Container maxWidth="md">
+						{this.state.approved ? `You're approved.` : `You're not approved.`}
+					</Container>
 				)}
-				<div style={{ display: "flex", justifyContent: "center" }}>
-					<Button variant="contained" color="primary" onClick={this.logout}>
-						Logout
-					</Button>
-				</div>
 			</>
 		);
 	}
-
-	logout = () => {
-		localStorage.removeItem("authToken");
-		this.props.history.push("/login");
-	};
 
 	fetchUsers = async () => {
 		const { data } = await axios.get(`${API}/api/private/list`, {
