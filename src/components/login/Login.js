@@ -22,7 +22,6 @@ class Login extends React.Component {
 		};
 	}
 
-	//once user is logged, it doesnt make sense to come on login/register screen
 	componentDidMount() {
 		if (localStorage.getItem("authToken")) {
 			this.props.history.push("/");
@@ -95,7 +94,7 @@ class Login extends React.Component {
 							</Grid>
 							<Grid container justify="center">
 								<Grid className={classes.linkContainer}>
-									<Link className={classes.link} variant="body2" to="/register">
+									<Link className={classes.link} variant="body2" to="/signup">
 										Don't have an account?{" "}
 										<span className={classes.signUp}>Sign Up</span>
 									</Link>

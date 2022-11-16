@@ -125,7 +125,7 @@ function Layout({ children }) {
 										<Typography
 											onClick={() => {
 												handleCloseNavMenu();
-												history.push("/register");
+												history.push("/signup");
 											}}
 											textAlign="center"
 										>
@@ -182,7 +182,7 @@ function Layout({ children }) {
 									style={{ color: "white" }}
 									onClick={() => {
 										handleCloseNavMenu();
-										history.push("/register");
+										history.push("/signup");
 									}}
 									sx={{ my: 2, color: "white", display: "block" }}
 								>
