@@ -14,8 +14,6 @@ import AdbIcon from "@mui/icons-material/Adb";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useHistory, useLocation } from "react-router-dom";
 
-const pages = ["Events"];
-
 function Layout({ children }) {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -98,11 +96,43 @@ function Layout({ children }) {
 									display: { xs: "block", md: "none" },
 								}}
 							>
-								{pages.map(page => (
-									<MenuItem key={page} onClick={handleCloseNavMenu}>
-										<Typography textAlign="center">{page}</Typography>
+								<MenuItem onClick={handleCloseNavMenu}>
+									<Typography
+										onClick={() => {
+											handleCloseNavMenu();
+											history.push("/events");
+										}}
+										textAlign="center"
+									>
+										EVENTS
+									</Typography>
+								</MenuItem>
+								{!isLoggedIn && (
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography
+											onClick={() => {
+												handleCloseNavMenu();
+												history.push("/login");
+											}}
+											textAlign="center"
+										>
+											LOGIN
+										</Typography>
 									</MenuItem>
-								))}
+								)}
+								{!isLoggedIn && (
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography
+											onClick={() => {
+												handleCloseNavMenu();
+												history.push("/register");
+											}}
+											textAlign="center"
+										>
+											SIGNUP
+										</Typography>
+									</MenuItem>
+								)}
 							</Menu>
 						</Box>
 						<AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -110,7 +140,7 @@ function Layout({ children }) {
 							variant="h5"
 							noWrap
 							component="a"
-							href=""
+							href="/"
 							sx={{
 								mr: 2,
 								display: { xs: "flex", md: "none" },
@@ -125,15 +155,40 @@ function Layout({ children }) {
 							LOGO
 						</Typography>
 						<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-							{pages.map(page => (
+							<Button
+								style={{ color: "white", marginLeft: 10 }}
+								onClick={() => {
+									handleCloseNavMenu();
+									history.push("/events");
+								}}
+								sx={{ my: 2, color: "white", display: "block" }}
+							>
+								EVENTS
+							</Button>
+							{!isLoggedIn && (
 								<Button
-									key={page}
-									onClick={handleCloseNavMenu}
+									style={{ color: "white" }}
+									onClick={() => {
+										handleCloseNavMenu();
+										history.push("/login");
+									}}
 									sx={{ my: 2, color: "white", display: "block" }}
 								>
-									{page}
+									LOGIN
 								</Button>
-							))}
+							)}
+							{!isLoggedIn && (
+								<Button
+									style={{ color: "white" }}
+									onClick={() => {
+										handleCloseNavMenu();
+										history.push("/register");
+									}}
+									sx={{ my: 2, color: "white", display: "block" }}
+								>
+									SIGNUP
+								</Button>
+							)}
 						</Box>
 
 						{isLoggedIn && (
@@ -170,6 +225,7 @@ function Layout({ children }) {
 										onClick={() => {
 											handleCloseUserMenu();
 											localStorage.removeItem("authToken");
+											localStorage.removeItem("usn");
 											history.push("/login");
 										}}
 									>

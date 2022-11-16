@@ -1,17 +1,17 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import styles from "./styles";
-import { withStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { withStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import { API } from "../../API";
 
-class Register extends React.Component {
+class Signup extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -22,11 +22,11 @@ class Register extends React.Component {
 			password: null,
 			passwordConfirmation: null,
 			upi_ref_no: null,
-			signupError: "",
+			signupError: null,
+			loading: false,
 		};
 	}
 
-	//once user is logged, it doesnt make sense to come on login/register screen
 	componentDidMount() {
 		if (localStorage.getItem("authToken")) {
 			this.props.history.push("/");
@@ -50,11 +50,10 @@ class Register extends React.Component {
 									style={{ color: "#ffffff" }}
 									autoFocus
 									variant="outlined"
-									required={true}
+									required
 									fullWidth
 									id="name"
 									label="Enter Name"
-									name="username"
 									autoComplete="off"
 									onChange={e => this.userTyping("name", e)}
 								/>
@@ -64,11 +63,10 @@ class Register extends React.Component {
 									style={{ color: "#ffffff" }}
 									autoFocus
 									variant="outlined"
-									required={true}
+									required
 									fullWidth
 									id="usn"
 									label="Enter USN"
-									name="USN"
 									autoComplete="off"
 									onChange={e => this.userTyping("usn", e)}
 								/>
@@ -77,11 +75,10 @@ class Register extends React.Component {
 								<TextField
 									style={{ color: "#ffffff" }}
 									variant="outlined"
-									required={true}
+									required
 									fullWidth
 									id="phone"
 									label="Enter Phone number"
-									name="phone"
 									autoComplete="off"
 									onChange={e => this.userTyping("phone", e)}
 								/>
@@ -90,12 +87,11 @@ class Register extends React.Component {
 								<TextField
 									style={{ color: "#ffffff" }}
 									variant="outlined"
-									required={true}
+									required
 									type="email"
 									fullWidth
 									id="email"
 									label="Enter Email Address"
-									name="email"
 									autoComplete="off"
 									onChange={e => this.userTyping("email", e)}
 								/>
@@ -103,9 +99,8 @@ class Register extends React.Component {
 							<Grid item xs={12}>
 								<TextField
 									variant="outlined"
-									required={true}
+									required
 									fullWidth
-									name="password"
 									label="Enter Password"
 									type="password"
 									id="password"
@@ -116,9 +111,8 @@ class Register extends React.Component {
 							<Grid item xs={12}>
 								<TextField
 									variant="outlined"
-									required={true}
+									required
 									fullWidth
-									name="passwordConfirmation"
 									label="Confirm Password"
 									type="password"
 									id="password-confirmation"
@@ -130,11 +124,10 @@ class Register extends React.Component {
 									style={{ color: "#ffffff" }}
 									autoFocus
 									variant="outlined"
-									required={true}
+									required
 									fullWidth
 									id="upi_ref_no"
 									label="Enter UPI Reference number"
-									name="upi_ref_no"
 									autoComplete="off"
 									onChange={e => this.userTyping("upi_ref_no", e)}
 								/>
@@ -149,14 +142,15 @@ class Register extends React.Component {
 								</Grid>
 							) : null}
 						</Grid>
-						<Button
+						<LoadingButton
 							type="submit"
+							loading={this.state.loading}
 							fullWidth
 							variant="contained"
 							className={classes.submit}
 						>
 							Sign Up
-						</Button>
+						</LoadingButton>
 						<Grid container justify="center">
 							<Grid item>
 								<Link
@@ -176,9 +170,7 @@ class Register extends React.Component {
 		);
 	}
 
-	formIsValid = () =>
-		this.state.password === this.state.passwordConfirmation &&
-		this.state.password.length > 4;
+	formIsValid = () => this.state.password === this.state.passwordConfirmation;
 
 	userTyping = (type, e) => {
 		switch (type) {
@@ -209,23 +201,14 @@ class Register extends React.Component {
 	};
 
 	submitSignup = async e => {
+		this.setState({ loading: true });
 		e.preventDefault();
-
-		const config = {
-			header: {
-				"Content-Type": "application/json",
-			},
-		};
-
 		if (!this.formIsValid()) {
-			this.setState({
-				signupError:
-					"Passwords must match and must be greater than 4 characters.",
-			});
-
+			this.setState({ signupError: "Passwords do not match!" });
 			setTimeout(() => {
-				this.setState({ signupError: " " });
+				this.setState({ signupError: "" });
 			}, 5000);
+			this.setState({ loading: false });
 			return;
 		}
 
@@ -234,18 +217,20 @@ class Register extends React.Component {
 			const { data } = await axios.post(
 				`${API}/api/auth/register`,
 				{ name, usn, email, phone, password, upi_ref_no },
-				config
+				{ header: { "Content-Type": "application/json" } }
 			);
 			localStorage.setItem("authToken", data.token);
+			localStorage.setItem("usn", data.usn);
 			this.props.history.push("/");
 		} catch (error) {
-			console.log(error);
-			this.setState({ error });
+			this.setState({ signupError: error.response.data.error });
 			setTimeout(() => {
 				this.setState({ signupError: "" });
 			}, 5000);
+		} finally {
+			this.setState({ loading: false });
 		}
 	};
 }
 
-export default withStyles(styles)(Register);
+export default withStyles(styles)(Signup);

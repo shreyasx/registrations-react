@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./router/PrivateRoute";
-import Private from "./components/private/Private";
+import Home from "./components/home/home";
 import Login from "./components/login/Login";
-import Register from "./components/register/Register";
+import Signup from "./components/signup/Signup";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import Layout from "./components/layout/layout";
+import EventsPage from "./components/events/events";
+import Register from "./components/register/register";
 
 class App extends React.Component {
 	render() {
@@ -14,9 +16,15 @@ class App extends React.Component {
 			<Router>
 				<Layout>
 					<Switch>
-						<PrivateRoute exact path="/" component={Private} />
+						<Route exact path="/" component={Home} />
 						<Route exact path="/login" component={Login} />
-						<Route exact path="/register" component={Register} />
+						<Route exact path="/signup" component={Signup} />
+						<Route exact path="/events" component={EventsPage} />
+						<PrivateRoute
+							exact
+							path="/events/register/:eventId"
+							component={Register}
+						/>
 						<Route exact path="/forgotpassword" component={ForgotPassword} />
 						<Route
 							exact

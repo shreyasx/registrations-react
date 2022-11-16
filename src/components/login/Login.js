@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
@@ -17,7 +17,8 @@ class Login extends React.Component {
 		this.state = {
 			email: null,
 			password: null,
-			loginError: "",
+			loginError: null,
+			loading: false,
 		};
 	}
 
@@ -47,7 +48,6 @@ class Login extends React.Component {
 								fullWidth
 								id="email"
 								label="Email Address"
-								name="email"
 								autoComplete="off"
 								autoFocus
 								onChange={e => this.userTyping("email", e)}
@@ -57,28 +57,28 @@ class Login extends React.Component {
 								margin="normal"
 								required
 								fullWidth
-								name="password"
 								label="Password"
 								type="password"
 								id="password"
 								autoComplete="off"
 								onChange={e => this.userTyping("password", e)}
 							/>
-							<Button
+							<LoadingButton
 								type="submit"
 								fullWidth
+								loading={this.state.loading}
 								variant="contained"
 								className={classes.submit}
 							>
 								Sign In
-							</Button>
+							</LoadingButton>
 							{this.state.loginError ? (
 								<Typography
 									className={classes.errorText}
 									component="h5"
 									variant="body2"
 								>
-									The email address or password entered is incorrect
+									{this.state.loginError}
 								</Typography>
 							) : null}
 							<Grid container justify="center">
@@ -123,6 +123,7 @@ class Login extends React.Component {
 
 	submitLogin = async e => {
 		e.preventDefault();
+		this.setState({ loading: true });
 		const { email, password } = this.state;
 		try {
 			const { data } = await axios.post(
@@ -134,13 +135,16 @@ class Login extends React.Component {
 					},
 				}
 			);
-			localStorage.setItem("authToken", data.token.toString());
+			localStorage.setItem("authToken", data.token);
+			localStorage.setItem("usn", data.usn);
 			this.props.history.push("/");
 		} catch (error) {
-			this.setState({ loginError: "Invalid credentials." });
+			this.setState({ loginError: error.response.data.error });
 			setTimeout(() => {
 				this.setState({ loginError: "" });
 			}, 5000);
+		} finally {
+			this.setState({ loading: false });
 		}
 	};
 }

@@ -3,18 +3,15 @@ import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Container from "@mui/material/Container";
 import { API } from "../../API";
+import { Typography } from "@material-ui/core";
 
-class Private extends React.Component {
+class Home extends React.Component {
 	constructor() {
 		super();
 		this.state = { admin: false, approved: false, users: [], loading: true };
 	}
 
 	componentDidMount() {
-		if (!localStorage.getItem("authToken")) {
-			this.props.history.push("/login");
-		}
-
 		const fetchPrivateData = async () => {
 			try {
 				const { data } = await axios.get(`${API}/api/private`, {
@@ -31,7 +28,7 @@ class Private extends React.Component {
 			}
 		};
 
-		fetchPrivateData();
+		if (localStorage.getItem("authToken")) fetchPrivateData();
 	}
 
 	render() {
@@ -52,6 +49,7 @@ class Private extends React.Component {
 									<th className="tg-0lax">Name</th>
 									<th className="tg-0lax">USN</th>
 									<th className="tg-0lax">Email</th>
+									<th className="tg-0lax">Phone</th>
 									<th className="tg-0lax">UPI Reference number</th>
 									<th className="tg-0lax">Approve Payment</th>
 								</tr>
@@ -62,6 +60,7 @@ class Private extends React.Component {
 										<td className="tg-0lax">{user.name}</td>
 										<td className="tg-0lax">{user.usn}</td>
 										<td className="tg-0lax">{user.email}</td>
+										<td className="tg-0lax">{user.phone}</td>
 										<td className="tg-0lax">{user.upi_ref_no}</td>
 										<td className="tg-0lax">
 											<LoadingButton
@@ -81,7 +80,9 @@ class Private extends React.Component {
 					</div>
 				) : (
 					<Container maxWidth="md">
-						{this.state.approved ? `You're approved.` : `You're not approved.`}
+						<Typography variant="h3" gutterBottom>
+							Homepage
+						</Typography>
 					</Container>
 				)}
 			</>
@@ -114,4 +115,4 @@ class Private extends React.Component {
 	};
 }
 
-export default Private;
+export default Home;
