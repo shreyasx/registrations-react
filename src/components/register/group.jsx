@@ -15,7 +15,13 @@ import { Box, Grid } from "@material-ui/core";
 import { Alert } from "../forgotpassword/ForgotPassword";
 import { API } from "../../API";
 
-const GroupEvent = ({ alreadyRegistered, eventId, checkRegistration }) => {
+const GroupEvent = ({
+	alreadyRegistered,
+	eventId,
+	checkRegistration,
+	min,
+	max,
+}) => {
 	const [open, setOpen] = React.useState(false);
 	const [error, setError] = React.useState(false);
 	const [loading, setLoading] = React.useState(false);
@@ -107,6 +113,9 @@ const GroupEvent = ({ alreadyRegistered, eventId, checkRegistration }) => {
 				This is a group event, you can register your team by clicking the button
 				below.
 			</p>
+			<p>
+				{`The minimum number of people in a team is ${min}, and maximum is ${max}.`}
+			</p>
 			<Button
 				onClick={handleClickOpen}
 				loading={loading}
@@ -125,13 +134,13 @@ const GroupEvent = ({ alreadyRegistered, eventId, checkRegistration }) => {
 				<DialogContent>
 					<DialogContentText>Don't forget to add your USN.</DialogContentText>
 					{values.map((jump, index) => (
-						<Box key={"jump" + index}>
+						<Box key={`jump${index}`}>
 							<Grid container spacing={1} alignItems="flex-end">
 								<Grid item xs={10}>
 									<TextField
 										autoFocus
 										margin="dense"
-										label="Value"
+										label="USN"
 										value={jump || ""}
 										onChange={e => handleValueChange(index, e)}
 										fullWidth
@@ -159,7 +168,7 @@ const GroupEvent = ({ alreadyRegistered, eventId, checkRegistration }) => {
 						Cancel
 					</Button>
 					<LoadingButton
-						loading={loading}
+						loading={loading || alreadyRegistered === "loading"}
 						onClick={register}
 						variant="contained"
 						color="primary"

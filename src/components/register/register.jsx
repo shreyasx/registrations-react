@@ -11,9 +11,10 @@ const Register = () => {
 	const { eventId } = useParams();
 	const [event, setEvent] = React.useState(null);
 	const [error, setError] = React.useState("");
-	const [alreadyRegistered, setAlreadyRegistered] = React.useState(false);
+	const [alreadyRegistered, setAlreadyRegistered] = React.useState("loading");
 
 	const checkRegistration = async () => {
+		setAlreadyRegistered("loading");
 		const { data } = await axios.get(
 			`${API}/api/private/registration/check/${eventId}`,
 			{
@@ -25,8 +26,6 @@ const Register = () => {
 		);
 		setAlreadyRegistered(data.alreadyRegistered);
 	};
-
-	// React.useEffect(() => checkRegistration, []);
 
 	React.useEffect(() => {
 		const getEventData = async () => {
@@ -65,6 +64,8 @@ const Register = () => {
 						/>
 					) : (
 						<GroupEvent
+							min={event.min}
+							max={event.max}
 							checkRegistration={checkRegistration}
 							alreadyRegistered={alreadyRegistered}
 							eventId={event._id}

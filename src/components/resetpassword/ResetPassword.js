@@ -18,7 +18,8 @@ class ResetPassword extends React.Component {
 			password: null,
 			loading: false,
 			cnfPassword: null,
-			error: "",
+			error: false,
+			msg: "",
 			success: "",
 		};
 	}
@@ -37,10 +38,10 @@ class ResetPassword extends React.Component {
 					>
 						<Alert
 							onClose={this.handleClose}
-							severity="success"
+							severity={this.state.error ? "error" : "success"}
 							sx={{ width: "100%" }}
 						>
-							Password reset successful!
+							{this.state.msg}
 						</Alert>
 					</Snackbar>
 					<div className={classes.paper}>
@@ -84,15 +85,6 @@ class ResetPassword extends React.Component {
 								Reset Password
 							</LoadingButton>
 						</form>
-						{this.state.signupError ? (
-							<Typography
-								className={classes.errorText}
-								component="h5"
-								variant="body2"
-							>
-								{this.state.signupError}
-							</Typography>
-						) : null}
 					</div>
 				</Container>
 			</div>
@@ -124,34 +116,49 @@ class ResetPassword extends React.Component {
 	};
 
 	submitNewPass = async e => {
+		this.handleClose();
 		this.setState({ loading: true });
 		e.preventDefault();
 		const config = { header: { "Content-Type": "application/json" } };
 		if (!this.formIsValid()) {
-			this.setState({ password: "" });
-			this.setState({ cnfPassword: "" });
-			this.setState({ signupError: "Passwords do not match!" });
+			document.getElementById("password").value = null;
+			document.getElementById("cnfpassword").value = null;
+			this.setState({
+				password: "",
+				cnfPassword: "",
+				msg: "Passwords do not match!",
+				error: true,
+			});
 			setTimeout(() => {
-				this.setState({ signupError: " " });
-			}, 5000);
+				this.setState({ msg: "", error: false });
+			}, 7200);
 			this.setState({ loading: false });
+			this.handleClick();
 			return;
 		}
 		const { password } = this.state;
 		try {
-			const { data } = await axios.put(
+			await axios.put(
 				`${API}/api/auth/resetpassword/${this.props.match.params.resetToken}`,
 				{ password },
 				config
 			);
-			if (data.success) this.handleClick();
-		} catch (error) {
-			this.setState({ signupError: "Some error occurred. Contact developer." });
+			this.setState({
+				msg: "Password reset successful, redirecting to login page...",
+				error: false,
+			});
 			setTimeout(() => {
-				this.setState({ error: " " });
-			}, 5000);
+				this.props.history.push("/login");
+			}, 7200);
+		} catch (error) {
+			this.setState({ msg: error.response.data.error, error: true });
+			setTimeout(() => {
+				this.setState({ msg: "", error: false });
+			}, 7200);
+		} finally {
+			this.setState({ loading: false });
+			this.handleClick();
 		}
-		this.setState({ loading: false });
 	};
 }
 

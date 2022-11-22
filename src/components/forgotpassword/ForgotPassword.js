@@ -20,7 +20,8 @@ class ForgotPassword extends React.Component {
 		super();
 		this.state = {
 			email: null,
-			error: "",
+			error: false,
+			msg: "",
 			loading: false,
 			success: "",
 			open: false,
@@ -41,10 +42,10 @@ class ForgotPassword extends React.Component {
 					>
 						<Alert
 							onClose={this.handleClose}
-							severity="success"
+							severity={this.state.error ? "error" : "success"}
 							sx={{ width: "100%" }}
 						>
-							If an account with that email exists, we've sent you a mail.
+							{this.state.msg}
 						</Alert>
 					</Snackbar>
 					<div className={classes.paper}>
@@ -109,9 +110,21 @@ class ForgotPassword extends React.Component {
 		e.preventDefault();
 		const { email } = this.state;
 		const config = { header: { "Content-Type": "application/json" } };
-		await axios.post(`${API}/api/auth/forgotpassword`, { email }, config);
-		this.handleClick();
-		this.setState({ loading: false });
+		try {
+			await axios.post(`${API}/api/auth/forgotpassword`, { email }, config);
+			this.setState({
+				error: false,
+				msg: "If an account with that email exists, we've sent you a mail.",
+			});
+		} catch (error) {
+			this.setState({ msg: error.response.data.error, error: true });
+			setTimeout(() => {
+				this.setState({ msg: "" });
+			}, 7200);
+		} finally {
+			this.setState({ loading: false });
+			this.handleClick();
+		}
 	};
 }
 
