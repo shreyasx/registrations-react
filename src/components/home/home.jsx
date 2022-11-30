@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
-import Container from "@mui/material/Container";
+// import Container from "@mui/material/Container";
 import { API } from "../../API";
-import { Typography } from "@material-ui/core";
+// import { Typography } from "@material-ui/core";
 
 class Home extends React.Component {
 	constructor() {
@@ -12,6 +12,7 @@ class Home extends React.Component {
 	}
 
 	componentDidMount() {
+		this.props.history.push("/events");
 		const fetchPrivateData = async () => {
 			try {
 				const { data } = await axios.get(`${API}/api/private`, {
@@ -79,11 +80,12 @@ class Home extends React.Component {
 						</table>
 					</div>
 				) : (
-					<Container maxWidth="md">
-						<Typography variant="h3" gutterBottom>
-							Homepage
-						</Typography>
-					</Container>
+					<></>
+					// <Container maxWidth="md">
+					// 	<Typography variant="h3" gutterBottom>
+					// 		Homepage
+					// 	</Typography>
+					// </Container>
 				)}
 			</>
 		);

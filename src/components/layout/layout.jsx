@@ -10,7 +10,6 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useHistory, useLocation } from "react-router-dom";
 
@@ -46,9 +45,8 @@ function Layout({ children }) {
 	return (
 		<>
 			<AppBar position="static">
-				<Container maxWidth="xl">
+				<Container maxWidth="lg">
 					<Toolbar disableGutters>
-						<AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
 						<Typography
 							variant="h6"
 							noWrap
@@ -64,7 +62,7 @@ function Layout({ children }) {
 								textDecoration: "none",
 							}}
 						>
-							LOGO
+							<img style={{ height: 80 }} src="/logo.png" alt="logo" />
 						</Typography>
 
 						<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -135,7 +133,6 @@ function Layout({ children }) {
 								)}
 							</Menu>
 						</Box>
-						<AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 						<Typography
 							variant="h5"
 							noWrap
@@ -152,7 +149,7 @@ function Layout({ children }) {
 								textDecoration: "none",
 							}}
 						>
-							LOGO
+							<img style={{ height: 80 }} src="/logo.png" alt="logo" />
 						</Typography>
 						<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 							<Button
