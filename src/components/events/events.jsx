@@ -19,8 +19,12 @@ const EventsPage = () => {
 
 	return (
 		<Container maxWidth="lg">
-			<Typography style={{ margin: "10px 0" }} variant="h3" gutterBottom>
-				Our Events
+			<Typography
+				style={{ margin: "20px 0", textAlign: "center" }}
+				variant="h3"
+				gutterBottom
+			>
+				ಸ್ಪರ್ಧೆಗಳು
 			</Typography>
 			<Grid container mb={5} style={{ justifyContent: "center" }} spacing={4}>
 				{events.map(ev => (

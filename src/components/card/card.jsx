@@ -11,7 +11,14 @@ export default function EventCard({ event }) {
 	const [lang, setLang] = React.useState("kan");
 
 	return (
-		<Card sx={{ maxWidth: 345 }}>
+		<Card
+			sx={{
+				maxWidth: 345,
+				height: 600,
+				display: "flex",
+				flexDirection: "column",
+			}}
+		>
 			<CardMedia component="img" alt={name} height={180} image={img_url} />
 			<CardContent>
 				<Typography gutterBottom variant="h5" component="div">
@@ -21,7 +28,11 @@ export default function EventCard({ event }) {
 					{lang === "eng" ? english : kannada}
 				</Typography>
 			</CardContent>
-			<CardActions style={{ justifyContent: "space-around", margin: "10px 0" }}>
+			<CardActions
+				disableSpacing
+				sx={{ mt: "auto", mb: 2 }}
+				style={{ justifyContent: "space-around" }}
+			>
 				<Button
 					variant="outlined"
 					href={`/events/register/${_id}`}

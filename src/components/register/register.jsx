@@ -71,9 +71,17 @@ const Register = () => {
 							eventId={event._id}
 						/>
 					)}
-					<Typography style={{ margin: "20px 0", textAlign: "center" }}>
+					<Typography
+						style={{ margin: "20px auto", textAlign: "center", maxWidth: 450 }}
+					>
 						{alreadyRegistered && (
-							<a href={event.link}>Click here to join the WhatsApp group.</a>
+							<>
+								<span>
+									Either you have registered or someone has included you in
+									their team.{" "}
+								</span>
+								<a href={event.link}>Click here to join the WhatsApp group.</a>
+							</>
 						)}
 					</Typography>
 				</>
