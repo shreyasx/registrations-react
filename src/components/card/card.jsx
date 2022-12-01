@@ -12,9 +12,8 @@ export default function EventCard({ event }) {
 
 	return (
 		<Card
-			sx={{
+			xs={{
 				maxWidth: 345,
-				height: 600,
 				display: "flex",
 				flexDirection: "column",
 			}}
