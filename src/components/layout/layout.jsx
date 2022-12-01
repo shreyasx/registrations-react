@@ -233,6 +233,21 @@ function Layout({ children }) {
 											Logout
 										</Typography>
 									</MenuItem>
+									<MenuItem>
+										<Typography
+											style={{ margin: "5px 25px" }}
+											textAlign="center"
+										>
+											<a
+												href="https://shreyasjamkhandi.tech"
+												target="_blank"
+												rel="noreferrer"
+												style={{ textDecoration: "none" }}
+											>
+												Download Rulebook
+											</a>
+										</Typography>
+									</MenuItem>
 								</Menu>
 							</Box>
 						)}
