@@ -21,7 +21,6 @@ class Signup extends React.Component {
 			email: null,
 			password: null,
 			passwordConfirmation: null,
-			upi_ref_no: null,
 			signupError: null,
 			loading: false,
 		};
@@ -67,6 +66,7 @@ class Signup extends React.Component {
 									fullWidth
 									id="usn"
 									label="Enter USN"
+									inputProps={{ style: { textTransform: "uppercase" } }}
 									autoComplete="off"
 									onChange={e => this.userTyping("usn", e)}
 								/>
@@ -119,19 +119,6 @@ class Signup extends React.Component {
 									onChange={e => this.userTyping("passwordConfirmation", e)}
 								/>
 							</Grid>
-							<Grid item xs={12}>
-								<TextField
-									style={{ color: "#ffffff" }}
-									autoFocus
-									variant="outlined"
-									required
-									fullWidth
-									id="upi_ref_no"
-									label="Enter UPI Reference number"
-									autoComplete="off"
-									onChange={e => this.userTyping("upi_ref_no", e)}
-								/>
-							</Grid>
 							{this.state.signupError ? (
 								<Grid container justify="center">
 									<Grid item>
@@ -178,7 +165,7 @@ class Signup extends React.Component {
 				this.setState({ name: e.target.value });
 				break;
 			case "usn":
-				this.setState({ usn: e.target.value });
+				this.setState({ usn: e.target.value.toUpperCase() });
 				break;
 			case "email":
 				this.setState({ email: e.target.value });
@@ -191,9 +178,6 @@ class Signup extends React.Component {
 				break;
 			case "passwordConfirmation":
 				this.setState({ passwordConfirmation: e.target.value });
-				break;
-			case "upi_ref_no":
-				this.setState({ upi_ref_no: e.target.value });
 				break;
 			default:
 				break;

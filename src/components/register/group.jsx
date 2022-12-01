@@ -44,7 +44,7 @@ const GroupEvent = ({
 
 	const handleValueChange = (index, e) => {
 		const updatedValues = values.map((value, i) => {
-			if (i === index) return e.target.value;
+			if (i === index) return e.target.value.toUpperCase();
 			else return value;
 		});
 		setValues(updatedValues);
