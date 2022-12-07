@@ -239,7 +239,7 @@ function Layout({ children }) {
 											textAlign="center"
 										>
 											<a
-												href="https://shreyasjamkhandi.tech"
+												href="https://drive.google.com/file/d/1HxbVF0Hfi272wewjZc6JVGWkFrYCWmmU/view?usp=drivesdk"
 												target="_blank"
 												rel="noreferrer"
 												style={{ textDecoration: "none" }}
