@@ -46,7 +46,7 @@ const Register = () => {
 			{event ? (
 				<>
 					<Typography style={{ margin: "10px 0" }} variant="h4">
-						{`Registraion for event '${event.name}'`}
+						{`Registraion for ${event.name}`}
 					</Typography>
 					<Typography style={{ margin: "10px 0" }}>
 						About the event <br />
@@ -74,7 +74,7 @@ const Register = () => {
 					<Typography
 						style={{ margin: "20px auto", textAlign: "center", maxWidth: 450 }}
 					>
-						{alreadyRegistered && (
+						{alreadyRegistered === true && (
 							<>
 								<span>
 									Either you have registered or someone has included you in
