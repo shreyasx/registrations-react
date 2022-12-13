@@ -69,6 +69,7 @@ class Signup extends React.Component {
 									inputProps={{ style: { textTransform: "uppercase" } }}
 									autoComplete="off"
 									onChange={e => this.userTyping("usn", e)}
+									helperText="Example 2GI19CS140 or GIT19CS006-T"
 								/>
 							</Grid>
 							<Grid item xs={12}>
