@@ -9,6 +9,8 @@ import ResetPassword from "./components/resetpassword/ResetPassword";
 import Layout from "./components/layout/layout";
 import EventsPage from "./components/events/events";
 import Register from "./components/register/register";
+import Admin from "./components/admin/admin";
+import Registrations from "./components/admin/registrations";
 
 class App extends React.Component {
 	render() {
@@ -31,6 +33,8 @@ class App extends React.Component {
 							path="/resetpassword/:resetToken"
 							component={ResetPassword}
 						/>
+						<Route exact path="/admin" component={Admin} />
+						<Route exact path="/admin/:eventId" component={Registrations} />
 					</Switch>
 				</Layout>
 			</Router>
