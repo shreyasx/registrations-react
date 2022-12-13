@@ -23,7 +23,11 @@ export default function EventCard({ event }) {
 				<Typography gutterBottom variant="h5" component="div">
 					{name}
 				</Typography>
-				<Typography variant="body2" color="text.secondary">
+				<Typography
+					variant="body2"
+					color="text.secondary"
+					style={{ textAlign: "justify", textJustify: "inter-word" }}
+				>
 					{lang === "eng" ? english : kannada}
 				</Typography>
 			</CardContent>
