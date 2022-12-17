@@ -75,7 +75,8 @@ const SoloEvent = ({ eventId, alreadyRegistered, checkRegistration }) => {
 				loading={loading || alreadyRegistered === "loading"}
 				style={{ margin: "10px 0" }}
 				variant="contained"
-				disabled={alreadyRegistered}
+				disabled
+				// disabled={alreadyRegistered}
 			>
 				{alreadyRegistered ? "already registered" : "Register now"}
 			</LoadingButton>

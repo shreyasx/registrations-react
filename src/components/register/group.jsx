@@ -171,6 +171,7 @@ const GroupEvent = ({
 						loading={loading || alreadyRegistered === "loading"}
 						onClick={register}
 						variant="contained"
+						disabled
 						color="primary"
 					>
 						register now

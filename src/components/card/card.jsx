@@ -40,6 +40,7 @@ export default function EventCard({ event }) {
 					variant="outlined"
 					href={`/events/register/${_id}`}
 					size="small"
+					disabled
 				>
 					Register
 				</Button>

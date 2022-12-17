@@ -5,6 +5,7 @@ import axios from "axios";
 import EventCard from "../card/card";
 import { API } from "../../API";
 import { Typography } from "@material-ui/core";
+import CustomizedDialogs from "../notice/dia";
 
 const EventsPage = () => {
 	const [events, setEvents] = React.useState([]);
@@ -19,6 +20,7 @@ const EventsPage = () => {
 
 	return (
 		<Container maxWidth="lg">
+			<CustomizedDialogs />
 			<Typography
 				style={{ margin: "20px 0", textAlign: "center" }}
 				variant="h3"
